@@ -3,7 +3,7 @@ import os
 import pathlib
 
 from chartsper.logging import logger
-from chartsper.midi import read_midifile, write_midifile
+from chartsper.io import read_midi
 from chartsper.schemas import ChartSong, ChartFile, KIND_MAPPING
 
 DATASET = 'Guitar Hero World Tour'
@@ -57,8 +57,15 @@ def main():
     chart_file_kinds = ['guitar', 'song', 'notes', 'preview']
     allowed_extensions = ['.chart', '.mid', '.ogg']
     chart_song = get_chart_song(chart_file_kinds, allowed_extensions)
-    mid = read_midifile(chart_song.notes[0].path)
-    print(mid)
+    # mid = read_midifile(chart_song.notes[0].path)
+    mid = read_midi(chart_song.notes[0].path)
+
+    for i, track in enumerate(mid.tracks):
+        print('Track {}: {}'.format(i, track.name))
+        for msg in track:
+            print(msg)
+
+    # print(mid)
 
 
 if __name__ == '__main__':
