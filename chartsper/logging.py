@@ -1,13 +1,10 @@
 from __future__ import annotations
+
 import logging
 import os
 import sys
-from typing import Optional
 
 from . import __name__
-
-
-import logging
 
 
 class LoggerFormatter(logging.Formatter):
@@ -39,12 +36,12 @@ class LoggerFormatter(logging.Formatter):
 
 def get_logger(
     *,
-    type_: str = 'stream',
+    type_: str = "stream",
     logs_path: str = None,
     filename: str = None,
-    process_id: str | None = None
+    process_id: str | None = None,
 ) -> logging.Logger:
-    if type_ == 'file' and logs_path is not None and filename is not None:
+    if type_ == "file" and logs_path is not None and filename is not None:
         if not os.path.exists(logs_path):
             os.makedirs(logs_path, exist_ok=True)
 
@@ -56,14 +53,14 @@ def get_logger(
 
         logging.basicConfig(
             filename=os.path.join(logs_path, filename),
-            filemode='w',
+            filemode="w",
             format="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
             level=logging.INFO,
             datefmt="%Y-%m-%d %H:%M:%S",
             force=True,
-            encoding='utf-8'
+            encoding="utf-8",
         )
-    elif type_ == 'stream':
+    elif type_ == "stream":
         stream_handler = logging.StreamHandler(sys.stdout)
         stream_handler.setFormatter(LoggerFormatter())
         logging.basicConfig(
@@ -71,8 +68,8 @@ def get_logger(
             level=logging.INFO,
             datefmt="%Y-%m-%d %H:%M:%S",
             force=True,
-            encoding='utf-8',
-            handlers=[stream_handler]
+            encoding="utf-8",
+            handlers=[stream_handler],
         )
     else:
         raise Exception("Type of logger not supported or unknown")
@@ -81,4 +78,4 @@ def get_logger(
     return logging.getLogger(name)
 
 
-logger = get_logger(type_='stream')
+logger = get_logger(type_="stream")
